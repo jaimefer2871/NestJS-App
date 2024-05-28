@@ -1,5 +1,10 @@
-import { Controller, Delete, Get, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query } from '@nestjs/common';
 import { TasksService } from './tasks.service';
+import { CreateTaskDto } from './dto/create-task.dto';
+interface Task {
+    id: number,
+    name: string
+}
 
 @Controller('tasks')
 export class TasksController {
@@ -7,13 +12,19 @@ export class TasksController {
     constructor(private taskService: TasksService) { }
 
     @Get('/')
-    getAllTasks() {
+    getAllTasks(@Query() query:any) {
+        console.log('q',query.limit);
         return this.taskService.getAll();
     }
 
+    @Get('/:id')
+    getTask(@Param('id') id:string): Task {
+        return this.taskService.getTask(parseInt(id));
+    }
+
     @Post('/create')
-    createTasks() {
-        return 'Creando';
+    createTasks(@Body() requestTask: CreateTaskDto) {
+        return this.taskService.create(requestTask);
     }
 
     @Put('/update')
