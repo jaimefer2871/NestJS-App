@@ -8,8 +8,8 @@ export class UsersService {
 
   constructor (private prisma: PrismaService){}
 
-  create(createUserDto: CreateUserDto) {
-    return this.prisma.user.create({data: createUserDto})
+  create(user: CreateUserDto) {
+    return this.prisma.user.create({data: user})
   }
 
   findAll() {
